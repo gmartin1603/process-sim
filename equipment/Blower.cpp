@@ -1,17 +1,22 @@
+#include "Blower.h"
 #include <iostream>
+#include <mutex>
+#include <cstdlib> // For system("cls")
 
-class Blower {
-public:
-    double fullLoadAmps;
-    double linePressure;
+extern std::mutex mtx; // Use the mutex declared in main.cpp
 
-    Blower() : fullLoadAmps(2.0), linePressure(0.2) {}
+Blower::Blower(AirLock& airLock) : airLockRef(airLock), fullLoadAmps(2.0), linePressure(0.2) {}
 
-    void updateBlower(double airLockSpeed) {
-        fullLoadAmps = 2 + airLockSpeed * 2;  // Idle amps adjusted here
-        linePressure = 0.2 + airLockSpeed * 1.5;  // Idle pressure adjusted here
+void Blower::updateBlower() {
+    fullLoadAmps = 2 + airLockRef.speedHz * 2;
+    linePressure = 0.2 + airLockRef.speedHz * 1.5;
+}
 
-        std::cout << "Blower full load amps: " << fullLoadAmps << std::endl;
-        std::cout << "Blower line pressure: " << linePressure << std::endl;
-    }
-};
+void Blower::displayStatus() {
+    mtx.lock();
+    system("cls");
+    std::cout << "AirLock Speed: " << airLockRef.speedHz << " Hz" << std::endl;
+    std::cout << "Blower Full Load Amps: " << fullLoadAmps << std::endl;
+    std::cout << "Blower Line Pressure: " << linePressure << std::endl;
+    mtx.unlock();
+}
