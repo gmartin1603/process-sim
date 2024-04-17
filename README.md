@@ -1,8 +1,8 @@
-# Cedar West Process Simulation - (skynet)
+# Cedar West Process Simulation - (skynet-sim)
 
 ## Description
 
-This project is a simulation of the processes at Cargill's Cedar Rapids West soybean processing plant. The simulation is built to serve initially as a tool for training and assessing competency of new operators and later in the development of the AI powered aspects of Skynet as well as serving as an AI powered simulation that can be used in pre production research to determine start up settings and pre-train the AI on new or experimental products.
+This project is a simulation of the processes at a soybean processing plant. The simulation is built to serve initially as a tool for training and assessing competency of new operators and later in the development of the AI powered aspects of Skynet as well as serving as an AI powered simulation that can be used in pre production research to determine start up settings and pre-train the AI on new or experimental products.
 
 ## Compilation
 
