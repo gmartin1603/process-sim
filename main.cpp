@@ -4,12 +4,15 @@
 #include <mutex>
 #include "equipment/AirLock.h"
 #include "equipment/Blower.h"
+#include "equipment/Tank.h"
 
 std::mutex mtx; // Mutex for thread-safe output
 
-void runDisplay(Blower* blower) {
+void runDisplay(Blower* blower, Tank* tank) {
     while (true) {
         blower->displayStatus();
+        tank->updateTank();
+        tank->displayStatus();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
@@ -17,7 +20,9 @@ void runDisplay(Blower* blower) {
 int main() {
     AirLock myAirLock;
     Blower myBlower(myAirLock);
-    std::thread displayThread(runDisplay, &myBlower);
+    Tank myTank("Tank 1", 10000, myAirLock);
+
+    std::thread displayThread(runDisplay, &myBlower, &myTank);
 
     while (true) {
         if (_kbhit()) {
