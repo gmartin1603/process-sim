@@ -1,44 +1,69 @@
 #include <iostream>
+#include <thread>
+#include <chrono>
+#include <conio.h>  // For _kbhit() and _getch()
+#include <mutex>
+
+std::mutex mtx; // Mutex for thread-safe output
 
 class AirLock {
 public:
-    double speedHz;  // Speed in hertz
-
+    double speedHz;
     AirLock() : speedHz(0.0) {}
-
-    void setSpeed(double hz) {
-        speedHz = hz;
-        std::cout << "AirLock speed set to " << speedHz << " Hz" << std::endl;
-    }
 };
 
 class Blower {
 public:
-    double fullLoadAmps;  // Full load amperage of the blower
-    double linePressure;  // Line pressure in the blower system
+    double fullLoadAmps;
+    double linePressure;
+    AirLock& airLockRef; // Reference to an AirLock object
 
-    Blower() : fullLoadAmps(0.0), linePressure(0.0) {}
+    Blower(AirLock& airLock) : airLockRef(airLock), fullLoadAmps(2.0), linePressure(0.2) {}
 
-    void updateBlower(double airLockSpeed) {
-        fullLoadAmps = 10 + airLockSpeed * 2;  // Example relationship
-        linePressure = 5 + airLockSpeed * 1.5;  // Example relationship
+    void updateBlower() {
+        fullLoadAmps = 2 + airLockRef.speedHz * 2;
+        linePressure = 0.2 + airLockRef.speedHz * 1.5;
+    }
 
-        std::cout << "Blower full load amps: " << fullLoadAmps << std::endl;
-        std::cout << "Blower line pressure: " << linePressure << std::endl;
+    void displayStatus() {
+        mtx.lock();
+        system("cls");
+        std::cout << "AirLock Speed: " << airLockRef.speedHz << " Hz" << std::endl;
+        std::cout << "Blower Full Load Amps: " << fullLoadAmps << std::endl;
+        std::cout << "Blower Line Pressure: " << linePressure << std::endl;
+        mtx.unlock();
     }
 };
 
+void runDisplay(Blower* blower) {
+    while (true) {
+        blower->displayStatus();
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+}
 
 int main() {
     AirLock myAirLock;
-    Blower myBlower;
+    Blower myBlower(myAirLock);
+    std::thread displayThread(runDisplay, &myBlower);
 
-    double speed;
-    std::cout << "Enter airlock speed in Hz: ";
-    std::cin >> speed;
+    while (true) {
+        if (_kbhit()) {
+            char ch = _getch();
+            if (ch == 'q') break;
+            mtx.lock();
+            if (ch == 'w') {
+                myAirLock.speedHz += 5;
+            }
+            if (ch == 's') {
+                myAirLock.speedHz -= 5;
+                myAirLock.speedHz = std::max(0.0, myAirLock.speedHz); // Ensure speed doesn't go negative
+            }
+            myBlower.updateBlower();
+            mtx.unlock();
+        }
+    }
 
-    myAirLock.setSpeed(speed);
-    myBlower.updateBlower(myAirLock.speedHz);
-
+    displayThread.detach(); // Detach the thread
     return 0;
 }
