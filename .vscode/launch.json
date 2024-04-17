@@ -5,7 +5,7 @@
 			"name": "Run blowerSimulation",
       "type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceFolder}/blowerSimulation",
+			"program": "${workspaceFolder}/main",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
