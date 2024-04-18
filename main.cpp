@@ -6,7 +6,16 @@
 #include "equipment/Blower.h"
 #include "equipment/Tank.h"
 
-std::mutex mtx; // Mutex for thread-safe output
+// Simulation control variables
+std::chrono::milliseconds baseInterval(500); // Base update interval of 500 ms
+double speedMultiplier = 1.0; // Speed multiplier, adjust this for different scenarios
+std::mutex mtx; // Mutex for thread safety
+
+//TODO: Implement setSimulationSpeed function to UI control
+void setSimulationSpeed(double multiplier) {
+    std::lock_guard<std::mutex> lock(mtx);
+    speedMultiplier = multiplier;
+}
 
 void runDisplay(Blower *blower, Tank *tank, Tank *lineOne)
 {
@@ -58,12 +67,14 @@ int main()
 
     if (myAirLock.speedHz > 0)
     {
-      myTank.empty(static_cast<int>(myAirLock.speedHz));
-      lineOne.fill(static_cast<int>(myAirLock.speedHz));
+      myTank.empty(static_cast<int>(myAirLock.speedHz * 10));
+      lineOne.fill(static_cast<int>(myAirLock.speedHz * 10));
     }
 
     myTank.updateTank();
     lineOne.updateTank();
+
+    std::this_thread::sleep_for(std::chrono::duration_cast<std::chrono::milliseconds>(baseInterval / speedMultiplier));
   }
 
   displayThread.detach(); // Detach the thread
