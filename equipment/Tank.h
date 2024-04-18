@@ -2,16 +2,23 @@
 #define TANK_H
 
 #include <iostream>
-#include "AirLock.h"  // Include AirLock instead of Blower
+#include <mutex>
+#include "AirLock.h"
+
+enum class TankState { Idle, Filling, Emptying, Transferring };
 
 class Tank {
 public:
-    std::string name;  // Name of the tank e.g., "Tank 1"
-    double pressure;   // Pressure in the tank
-    int weight;        // Weight of the tank content in pounds, e.g., 10000
-    AirLock& airLockRef;  // Reference to AirLock
+    std::string name;
+    double pressure;
+    int weight;
+    TankState state;
+    AirLock& airLockRef;
+    std::mutex mtx;  // Mutex for thread-safe operations
 
-    Tank(std::string tankName, int initialWeight, AirLock& airLock); 
+    Tank(std::string tankName, int initialWeight, AirLock& airLock);
+    void fill(int amount);
+    void empty(int amount);
     void updateTank();
     void displayStatus();
 };

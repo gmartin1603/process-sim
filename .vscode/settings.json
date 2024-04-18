@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
     "kbhit"
-  ]
+  ],
+  "cmake.configureOnOpen": true
 }
