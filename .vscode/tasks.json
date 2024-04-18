@@ -10,7 +10,8 @@
 				"main",
 				"main.cpp",
 				"equipment/AirLock.cpp",
-				"equipment/Blower.cpp"
+				"equipment/Blower.cpp",
+        "equipment/Tank.cpp",
 			],
 			"group": {
 				"kind": "build",
