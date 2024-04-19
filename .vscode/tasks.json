@@ -9,9 +9,7 @@
 				"-o",
 				"main",
 				"main.cpp",
-				"equipment/AirLock.cpp",
-				"equipment/Blower.cpp",
-        "equipment/Tank.cpp",
+				"equipment/*.cpp",
 			],
 			"group": {
 				"kind": "build",
