@@ -1,10 +1,11 @@
+
+
 /*
 This is a UI file (.ui.qml) that is intended to be edited in Qt Design Studio only.
 It is supposed to be strictly declarative and only uses a subset of QML. If you edit
 this file manually, you might introduce QML code that is not supported by Qt Design Studio.
 Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on .ui.qml files.
 */
-
 import QtQuick 6.5
 import QtQuick.Controls 6.5
 import Simulator_GUI
@@ -13,13 +14,21 @@ Rectangle {
     id: rectangle
     width: Constants.width
     height: Constants.height
-
-    color: Constants.backgroundColor
+    color: "#3f51aa"
 
     Button {
         id: button
-        text: qsTr("Press me")
+        width: 182
+        height: 40
+        text: qsTr("Start Simulation")
         anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: 300
+        bottomInset: 0
+        topInset: 0
+        font.weight: Font.DemiBold
+        font.bold: false
+        font.pointSize: 12
+        font.family: "Tahoma"
         checkable: true
         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -31,10 +40,14 @@ Rectangle {
 
     Text {
         id: label
-        text: qsTr("Hello Simulator_GUI")
+        text: qsTr("Process Stats")
         anchors.top: button.bottom
         font.family: Constants.font.family
-        anchors.topMargin: 45
+        anchors.topMargin: -523
+        anchors.horizontalCenterOffset: 408
+        font.capitalization: Font.AllUppercase
+        font.pointSize: 14
+        font.weight: Font.Bold
         anchors.horizontalCenter: parent.horizontalCenter
 
         SequentialAnimation {
@@ -57,6 +70,38 @@ Rectangle {
             }
         }
     }
+
+    Button {
+        id: button1
+        text: qsTr("Decrease")
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: 300
+        anchors.horizontalCenterOffset: -600
+        bottomInset: 0
+        topInset: 0
+        font.weight: Font.DemiBold
+        font.bold: false
+        font.pointSize: 12
+        font.family: "Tahoma"
+        checkable: true
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
+
+    Button {
+        id: button2
+        text: qsTr("Increase")
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: 300
+        anchors.horizontalCenterOffset: -400
+        bottomInset: 0
+        topInset: 0
+        font.weight: Font.DemiBold
+        font.bold: false
+        font.pointSize: 12
+        font.family: "Tahoma"
+        checkable: true
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
     states: [
         State {
             name: "clicked"
@@ -64,7 +109,7 @@ Rectangle {
 
             PropertyChanges {
                 target: label
-                text: qsTr("Button Checked")
+                text: qsTr("Simulation Started")
             }
         }
     ]

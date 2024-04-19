@@ -13,8 +13,10 @@ Window {
 
     Screen01 {
         id: mainScreen
-        x: 17
+        x: 0
         y: 0
+        width: 1500
+        height: 800
 
         Rectangle {
             id: rectangle
@@ -78,6 +80,16 @@ Window {
             width: 76
             height: 33
             color: "#ffffff"
+
+            Text {
+                id: text1
+                x: 8
+                y: 9
+                width: 60
+                height: 16
+                text: qsTr("10% FLA")
+                font.pixelSize: 12
+            }
         }
 
         Rectangle {
@@ -103,6 +115,28 @@ Window {
             x: 576
             y: 455
             width: 11
+            height: 11
+            color: "#ffffff"
+        }
+
+        Text {
+            id: text2
+            x: 502
+            y: 474
+            width: 34
+            height: 11
+            text: qsTr("0.2 PSI")
+            font.pixelSize: 10
+            verticalAlignment: Text.AlignVCenter
+            font.bold: true
+            z: 2
+        }
+
+        Rectangle {
+            id: rectangle10
+            x: 502
+            y: 474
+            width: 34
             height: 11
             color: "#ffffff"
         }
